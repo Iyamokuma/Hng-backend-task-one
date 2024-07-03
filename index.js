@@ -19,14 +19,14 @@ app.get(`${baseUrl}/hello`, async (req, res) => {
         const { data } = await axios.get(`${weatherApiBaseUrl}/current.json`, {
             params: {
                 key,
-                q: req.ip
+                q:ip
             }
         })
         const { location: { name } } = data;
         const { current: { temp_c } } = data;
 
         res.status(200).json({
-            client_ip: req.ip,
+            client_ip: ip,
             location: name,
             greeting: `Hello, ${visitorName ? visitorName : "user"}!,the temperature is ${temp_c} degrees Celcius in ${name}`
         })
