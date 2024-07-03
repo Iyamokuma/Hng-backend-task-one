@@ -11,11 +11,7 @@ app.get(`${baseUrl}/hello`, async (req, res) => {
     try {
         const visitorName = req.query?.visitor_name;
         const key = process.env.WEATHER_API_KEY
-        let ip = req.ip
-        if(process.env.NODE_ENV === "production"){
-            ip = req.headers["x-forwarded-for" ] || req.headers["x-real-ip"] || req.connection.remoteAddress;
-
-        }
+        
         const { data } = await axios.get(`${weatherApiBaseUrl}/current.json`, {
             params: {
                 key,
@@ -26,7 +22,7 @@ app.get(`${baseUrl}/hello`, async (req, res) => {
         const { current: { temp_c } } = data;
 
         res.status(200).json({
-            client_ip: ip,
+            client_ip: req.headers["x-forwarded-for" ],
             location: name,
             greeting: `Hello, ${visitorName ? visitorName : "user"}!,the temperature is ${temp_c} degrees Celcius in ${name}`
         })
