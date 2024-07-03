@@ -19,7 +19,7 @@ app.get(`${baseUrl}/hello`, async (req, res) => {
         const { data } = await axios.get(`${weatherApiBaseUrl}/current.json`, {
             params: {
                 key,
-                q:ip
+                q:req.headers["x-forwarded-for" ]
             }
         })
         const { location: { name } } = data;
